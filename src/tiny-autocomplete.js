@@ -1,10 +1,11 @@
 /**
  * Tiny Autocomplete
  * Small and fast autocomplete plugin for Zepto and jQuery.
+ * Forked by Igor Rusinov, https://github.com/RusinovIG
  * Written by Johan Halse, https://twitter.com/hejsna, johan@varvet.se
  * Contributions by Juha Tauriainen, https://github.com/JuhQ
  * License: http://johanhalse.mit-license.org
- * @version 0.4.5
+ * @version 0.4.6
  * @return {object}         Self
  */
 (function(window, $) {
@@ -37,7 +38,8 @@
       groupTemplate: '<li class="autocomplete-group"><span class="autocomplete-group-header">{{title}}</span><ul class="autocomplete-items" /></li>',
       itemTemplate: '<li class="autocomplete-item">{{title}}</li>',
       showNoResults: false,
-      noResultsTemplate: '<li class="autocomplete-item">No results for {{title}}</li>'
+      noResultsTemplate: '<li class="autocomplete-item">No results for {{title}}</li>',
+      ajaxSettings: {}
     },
 
     /**
@@ -161,13 +163,15 @@
       var data = {};
       $.extend(data, this.settings.queryParameters);
       data[this.settings.queryProperty] = val;
-      $.ajax({
+      var ajaxSettings = {
         method: this.settings.method,
         url: this.settings.url,
         dataType: 'json',
         data: data,
         success: $.proxy(this.beforeReceiveData, this)
-      });
+      };
+      $.extend(ajaxSettings, this.settings.ajaxSettings);
+      $.ajax(ajaxSettings);
     },
 
     /**
