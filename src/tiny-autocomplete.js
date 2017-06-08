@@ -39,7 +39,8 @@
       itemTemplate: '<li class="autocomplete-item">{{title}}</li>',
       showNoResults: false,
       noResultsTemplate: '<li class="autocomplete-item">No results for {{title}}</li>',
-      ajaxSettings: {}
+      ajaxSettings: {},
+      getRequestData: false
     },
 
     /**
@@ -160,9 +161,14 @@
      */
     remoteRequest: function(val) {
       this.field.trigger('beforerequest', [this, val]);
+      
       var data = {};
-      $.extend(data, this.settings.queryParameters);
-      data[this.settings.queryProperty] = val;
+      if ($.isFunction(this.settings.getRequestData)) {
+        data = this.settings.getRequestData.call(this, val);
+      } else {
+        $.extend(data, this.settings.queryParameters);
+        data[this.settings.queryProperty] = val;
+      }
       var ajaxSettings = {
         method: this.settings.method,
         url: this.settings.url,
