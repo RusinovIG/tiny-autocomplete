@@ -80,6 +80,13 @@ $('.autocomplete').tinyAutocomplete({ keyboardDelay:400 });
 The delay between user releasing the key and search being performed. Set this high to avoid firing lots of requests while the user is typing, or low for more responsiveness. Defaults to `200` and can be set to `null` to bypass it altogether.
 
 
+#### getRequestData
+```javascript
+$('.autocomplete').tinyAutocomplete({ getRequestData: function (val) {return JSON.stringify({query: val});} });
+```
+Function to generate request data to send in GET or POST request. Use instead of queryProperty and queryParameters.
+
+
 #### queryProperty:
 ```javascript
 $('.autocomplete').tinyAutocomplete({ queryProperty:'term' });
